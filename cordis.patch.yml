@@ -1,0 +1,5 @@
+# Add this entry to ~/.dsh/profiles/web/cordis.patch.yml after installing the package.
+# The patch layer is applied after every bundle layer, so the entry mounts on every
+# profile start — no approval, no re-define, survives container restarts.
+- id: dictation-mic
+  name: dsh-dictation-mic
