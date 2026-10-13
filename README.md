@@ -56,7 +56,8 @@ Features:
   raw 16 kHz int16 PCM via `ScriptProcessorNode` and `fetch`es same-origin chunks.
 - `lib/index.js` is the Host half: it registers the authenticated fetch route on the
   Connection service (`ctx.connection.fetch.register`) and lazily loads the Whisper model
-  (cache: `~/.cache/dsh-dictation-whisper`, ~80 MB, downloaded once from the HF mirror).
+  (cache: `~/.dsh/cache/dsh-dictation-whisper` — inside the persistent DSH volume, survives
+  container recreation; ~280 MB, downloaded once from the HF mirror).
 
 ## Requirements
 
