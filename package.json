@@ -1,7 +1,7 @@
 {
   "name": "dsh-dictation-mic",
-  "version": "1.0.0",
-  "description": "Microphone dictation button for the DeepSeek Harness Web UI composer (Web Speech API, auto-restart, live meter, language dropdown)",
+  "version": "1.1.0",
+  "description": "Microphone dictation button for the DeepSeek Harness Web UI composer: Web Speech API on desktop Chrome/Edge, Whisper (server STT) on Android/mobile and any browser without a Google backend",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -27,12 +27,15 @@
       "platform": "web"
     }
   },
+  "dependencies": {
+    "@huggingface/transformers": ">=4"
+  },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.2"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/USER/dsh-dictation-mic.git"
+    "url": "git+https://github.com/trapswap/dsh-dictation-mic.git"
   }
 }
