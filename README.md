@@ -5,7 +5,7 @@ button in the composer (`conversation.input.right` slot). Two STT engines:
 
 - **Google (Web Speech API)** — desktop Chrome/Edge, fast with live interim text.
 - **Whisper (server)** — audio is recorded in the browser, streamed as raw PCM chunks
-  to an authenticated same-origin route (`/dictation-transcribe`), and transcribed
+  to an authenticated same-origin route (`/api/dictation/transcribe`), and transcribed
   locally on the Host with `Xenova/whisper-base` (CPU, offline after first download).
   This works where the Web Speech API has no backend: **Android Chrome**, Vivaldi,
   Firefox — and it supports **Bulgarian (`bg-BG`)**.
