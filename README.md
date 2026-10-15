@@ -3,22 +3,24 @@
 A static Cordis plugin row for the DeepSeek Harness Web UI: a microphone **Dictate**
 button in the composer (`conversation.input.right` slot). Two STT engines:
 
-- **Google (Web Speech API)** — desktop Chrome/Edge, fast with live interim text.
+- **Google (Web Speech API)** — desktop Chrome/Edge, fast streaming STT with live
+  interim text; recognizes Bulgarian too (language auto-detected from the audio).
 - **Whisper (server)** — audio is recorded in the browser, streamed as raw PCM chunks
   to an authenticated same-origin route (`/api/dictation/transcribe`), and transcribed
   locally on the Host with `Xenova/whisper-small` (CPU, offline after first download).
   This works where the Web Speech API has no backend: **Android Chrome**, Vivaldi,
   Firefox — and it supports **Bulgarian (`bg-BG`)**.
 
-Mode dropdown: `Auto` (Whisper on Android, Google elsewhere), `Google (desktop)`,
-`Whisper (server)`.
+Mode dropdown: `Auto` (Google on real Chrome/Edge, Whisper everywhere else — Vivaldi,
+Opera, Firefox, Android), `Google (desktop)`, `Whisper (server)`.
 
 Features:
 - auto-restart on engine `onend` (Chrome short-session ends) while you want to listen
 - live audio level meter (getUserMedia + AnalyserNode) — proof the mic is picking you up
 - live interim transcript display (Google mode); appended text feedback (Whisper mode)
 - pending-text flush on stop/unmount
-- language dropdown incl. `bg-BG` (Whisper only; the Google backend has no `bg`)
+- language dropdown incl. `bg-BG` (Whisper forces `bg`; Google mode auto-detects the
+  spoken language, so Bulgarian works there as well)
 - stall watchdog: warns after 10s of listening with no results
 
 ## Install (survives container restarts)
