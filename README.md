@@ -1,7 +1,7 @@
 # dsh-dictation-mic
 
 A static Cordis plugin row for the DeepSeek Harness Web UI: a microphone **Dictate**
-button in the composer (`conversation.input.right` slot). Two STT engines:
+button in the composer (`conversation.input.right` slot). Three STT engines:
 
 - **Google (Web Speech API)** — desktop Chrome/Edge, fast streaming STT with live
   interim text; recognizes Bulgarian too (language auto-detected from the audio).
@@ -10,9 +10,14 @@ button in the composer (`conversation.input.right` slot). Two STT engines:
   locally on the Host with `Xenova/whisper-small` (CPU, offline after first download).
   This works where the Web Speech API has no backend: **Android Chrome**, Vivaldi,
   Firefox — and it supports **Bulgarian (`bg-BG`)**.
+- **Voz (server)** — same PCM chunks, transcribed on the Host with Desert Ant Labs
+  `@desert-ant-labs/voz` (NVIDIA Parakeet TDT 0.6B v3, CC BY 4.0) on `onnxruntime-node`
+  CPU. 25 European languages incl. **Bulgarian**, auto-detected (no language parameter);
+  noticeably more accurate than Whisper small for Bulgarian. Model (~409 MB) is cached
+  under `~/.dsh/cache/desert-ant-models` (persistent volume).
 
 Mode dropdown: `Auto` (Google on real Chrome/Edge, Whisper everywhere else — Vivaldi,
-Opera, Firefox, Android), `Google (desktop)`, `Whisper (server)`.
+Opera, Firefox, Android), `Google (desktop)`, `Whisper (server)`, `Voz (server)`.
 
 Features:
 - auto-restart on engine `onend` (Chrome short-session ends) while you want to listen
@@ -59,14 +64,20 @@ Features:
 - `lib/index.js` is the Host half: it registers the authenticated fetch route on the
   Connection service (`ctx.connection.fetch.register`) and lazily loads the Whisper model
   (cache: `~/.dsh/cache/dsh-dictation-whisper` — inside the persistent DSH volume, survives
-  container recreation; ~280 MB, downloaded once from the HF mirror).
+  container recreation; ~280 MB, downloaded once from the HF mirror) or the Voz bundle
+  (cache: `~/.dsh/cache/desert-ant-models`, ~409 MB; symlink `~/.cache/desert-ant-models`
+  into the persistent volume so it survives container recreation).
+- Voz in Node takes a **file path** (streamed WAV); its in-memory `Float32Array` input
+  crashes the WASM build, so the Host half writes each chunk as a 16-bit WAV to a temp
+  file and passes the path.
 
 ## Requirements
 
 - Google mode: Chrome or Edge (the recognition backend is Google's; Chromium forks without
   it — e.g. Vivaldi — start but never return results).
-- Whisper mode: any browser with `getUserMedia` (Android Chrome included); the Host needs
+- Whisper/Voz mode: any browser with `getUserMedia` (Android Chrome included); the Host needs
   network access once for the model download, disk, and a few hundred MB of RAM.
+- Voz needs `onnxruntime-node`'s native binding (approve pnpm build scripts for it).
 - Microphone permission in the browser.
 
 License: MIT.

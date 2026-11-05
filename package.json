@@ -1,7 +1,7 @@
 {
   "name": "dsh-dictation-mic",
-  "version": "1.1.0",
-  "description": "Microphone dictation button for the DeepSeek Harness Web UI composer: Web Speech API on desktop Chrome/Edge, Whisper (server STT) on Android/mobile and any browser without a Google backend",
+  "version": "1.2.0",
+  "description": "Microphone dictation button for the DeepSeek Harness Web UI composer: Web Speech API on desktop Chrome/Edge, Whisper (server STT) and Voz/Parakeet (server STT) on Android/mobile and any browser without a Google backend",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -28,7 +28,9 @@
     }
   },
   "dependencies": {
-    "@huggingface/transformers": ">=4"
+    "@desert-ant-labs/voz": "^4.2.3",
+    "@huggingface/transformers": ">=4",
+    "onnxruntime-node": "^1.31.1"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.2"
