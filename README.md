@@ -1,7 +1,7 @@
 # dsh-dictation-mic
 
 A static Cordis plugin row for the DeepSeek Harness Web UI: a microphone **Dictate**
-button in the composer (`conversation.input.right` slot). Three STT engines:
+button in the composer (`conversation.input.right` slot). Four STT engines:
 
 - **Google (Web Speech API)** — desktop Chrome/Edge, fast streaming STT with live
   interim text; recognizes Bulgarian too (language auto-detected from the audio).
@@ -16,8 +16,15 @@ button in the composer (`conversation.input.right` slot). Three STT engines:
   noticeably more accurate than Whisper small for Bulgarian. Model (~409 MB) is cached
   under `~/.dsh/cache/desert-ant-models` (persistent volume).
 
+- **Voz (WebGPU)** — the same Parakeet model runs **in the browser**: `lib/client.js` loads
+  `@desert-ant-labs/voz` from esm.sh on demand, the SDK pulls `onnxruntime-web` (WebGPU when
+  the adapter supports `shader-f16`, otherwise WASM), the ~409 MB model is cached in the
+  browser Cache API, and 10 s `Float32Array` chunks are transcribed locally. Needs a browser
+  with WebGPU (Chromium 135+, Safari 26+) and network access for the first model fetch.
+
 Mode dropdown: `Auto` (Google on real Chrome/Edge, Whisper everywhere else — Vivaldi,
-Opera, Firefox, Android), `Google (desktop)`, `Whisper (server)`, `Voz (server)`.
+Opera, Firefox, Android), `Google (desktop)`, `Whisper (server)`, `Voz (server)`,
+`Voz (WebGPU)`.
 
 Features:
 - auto-restart on engine `onend` (Chrome short-session ends) while you want to listen
